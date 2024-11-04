@@ -5,13 +5,25 @@ import java.sql.*;
 public class Main {
     // Configuración de la base de datos
     private static final String URL = "jdbc:mysql://localhost:3306/tienda_online";
-    private static final String USER = "root"; 
-    private static final String PASSWORD = "tu contraseña"; // Cambia esto según tu configuración
+    private static final String USER = "root";
+    private static final String PASSWORD = "tu_contraseña"; // Cambia esto según tu configuración
 
     public static void main(String[] args) {
-        // Procesar pedidos de Ana y Juan
-        processOrder("Ana", 10);
-        processOrder("Juan", 10);
+        // Crear hilos para procesar los pedidos
+        Thread threadAna = new Thread(() -> processOrder("Ana", 10));
+        Thread threadJuan = new Thread(() -> processOrder("Juan", 10));
+
+        // Iniciar los hilos
+        threadAna.start();
+        threadJuan.start();
+
+        // Esperar a que ambos hilos terminen
+        try {
+            threadAna.join();
+            threadJuan.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // Método para procesar un pedido
