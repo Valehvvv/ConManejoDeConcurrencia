@@ -5,8 +5,8 @@ import java.sql.*;
 public class Main {
     // Configuración de la base de datos
     private static final String URL = "jdbc:mysql://localhost:3306/tienda_online";
-    private static final String USER = "root";
-    private static final String PASSWORD = "tu_contraseña"; // Cambia esto según tu configuración
+    private static final String USER = "root"; 
+    private static final String PASSWORD = "tu contraseña"; // Cambia esto según tu configuración
 
     public static void main(String[] args) {
         // Crear hilos para procesar los pedidos
@@ -32,8 +32,8 @@ public class Main {
             connection.setAutoCommit(false); // Iniciar transacción
             System.out.println("Iniciando transacción para " + clientName);
 
-            // Leer el stock del producto
-            String readStockSQL = "SELECT stock FROM productos WHERE id = ?";
+            // Leer el stock del producto con un bloqueo
+            String readStockSQL = "SELECT stock FROM productos WHERE id = ? FOR UPDATE";
             try (PreparedStatement readStockStmt = connection.prepareStatement(readStockSQL)) {
                 readStockStmt.setInt(1, 1); // ID del producto
                 ResultSet rs = readStockStmt.executeQuery();
@@ -78,3 +78,4 @@ public class Main {
         }
     }
 }
+
